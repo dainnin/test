@@ -17,7 +17,7 @@
 <div id="app"></div>
 
 <script defer>
-    const url=location.pathname.substring(0,location.pathname.lastIndexOf("/"));
+    const url=document.getElementsByTagName("base")[0].href;
     const vistas = {
   '/ruta1': 'Estás en la Ruta 1',
   '/ruta2': 'Estás en la Ruta 2',
@@ -61,7 +61,7 @@ function renderizarVista(ruta) {
 }
 
 // Renderizar la vista inicial
-renderizarVista(location.pathname);
+renderizarVista(url+ruta);
 </script>
 
 </body>
