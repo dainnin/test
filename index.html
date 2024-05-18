@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <base href='function(){return location.host}'></base>
+  <h1><ul>
+  <li><a href='/testJSON'>
+  Registro
+  </a></li>
+  <ul>
+  </h1>
+<h1>Single Page Application con JavaScript puro</h1>
+
+<button onclick="renderizarVista('/ruta1')">Ir a Ruta 1</button>
+<button onclick="renderizarVista('/ruta2')">Ir a Ruta 2</button>
+<button onclick="renderizarVista('/ruta3')">Ir a Ruta 3</button>
+
+<div id="app"></div>
+
+<script defer>
+    const url=location.pathname.substring(0,location.pathname.lastIndexOf("/"));
+    const vistas = {
+  '/ruta1': 'Estás en la Ruta 1',
+  '/ruta2': 'Estás en la Ruta 2',
+  '/ruta3': 'Estás en la Ruta 3',
+};
+    
+    const filtros = {
+  categoria: 'Electrónica',
+  precioMaximo: 100
+};
+/* window.onpopstate = function(event) {
+  if (event.state) {
+    filtros = event.state;
+    renderizarVista();
+  }
+}; */
+
+/* // Renderizar la vista inicial
+renderizarVista(); */
+// El usuario cambia los filtros
+filtros.categoria = 'Libros';
+filtros.precioMaximo = 20;
+
+// Guardas el estado actual de los filtros en el historial
+
+function navegar(ruta) {
+  
+  history.pushState(filtros, 'Me parece que anda', url+ruta);
+  
+  
+}
+
+
+function renderizarVista(ruta) {
+    navegar(ruta)
+  const app = document.getElementById('app');
+ 
+
+  app.textContent = vistas[ruta] || 'Por favor, selecciona una ruta.';
+
+}
+
+// Renderizar la vista inicial
+renderizarVista(location.pathname);
+</script>
+
+</body>
+</html>
