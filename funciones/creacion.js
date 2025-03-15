@@ -1,7 +1,7 @@
 
 
 
-import { $, atest } from '/modulos/funciones/utilidades.js';
+import { $, atest } from 'https://dainnin.github.io/test/funciones/utilidades.js';
 
 
 
