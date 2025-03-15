@@ -1,11 +1,4 @@
-
-
-
 import { $, atest } from 'https://dainnin.github.io/test/funciones/utilidades.js';
-
-
-
-
 
 export const HashEnabled = (() => $.HashEnabled);
 
@@ -13,11 +6,8 @@ const hPart = () => [$.hash === '' ? $.path.replace("/", "") : $.hash.replace("#
 const create = (Ebody) => atest(Ebody[hPart()[0]][hPart()[1]])
 export const createUpdate = (e, b) => {
 
-
     const createUpdateX = (e) => {
         try {
-
-
 
             if ($.hash !== '' && $.path.replace('/', '') === '') {
                 console.log(2, $.hash,)
@@ -28,7 +18,6 @@ export const createUpdate = (e, b) => {
                 console.log(3, $.path.replace('/', ''), e)
                 $.voidMain()
                 $._main.appendChild(atest(e[$.path.replace('/', '')]))
-
 
             } else if ($.hash === "" && $.path === '') {
                 console.log(4)
@@ -58,8 +47,6 @@ export const createUpdate = (e, b) => {
 
             if (event.target && targetN === ('A')) {
                 event.preventDefault()
-
-
 
                 if ('#' + $.hash !== eventHash ?
                     location.hash = eventHash : false && e[hPart()[0]] !== undefined) {
@@ -116,13 +103,3 @@ export const createUpdate = (e, b) => {
     createUpdateX(e)
 
 }
-
-
-
-
-
-/* X(Ebody, rutas,true); */
-
-
-
-
