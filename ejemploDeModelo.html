@@ -8,20 +8,68 @@
  -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-   
-   
+
+
+
+
     <script type="module" defer="true">
-        import { createUpdate, HashEnabled } from 'https://dainnin.github.io/test/funciones/creacion.js'
-        HashEnabled();
-        createUpdate(
+
+        import { createUpdate, HashEnabled, elements } from 'http://localhost:4063/modulos/funciones/creacion.js'
+        const crearTags = ({ data, load, error, element }) => {
+
+            if (load) {
+
+                element.innerHTML = `<h1>Esta cargando...</h1>`
+            } else
+                if (error) {
+                    element.innerHTML = `<h1>${error}</h1>`
+                }
+                else {
+                    element.innerHTML = ``
+                    data.forEach(a => {
+                        element.appendChild(elements(
+                            [{
+                                div: {
+                                    innerHTML: [
+                                        `
+                            <h3>${a.nombre}</h4>
+                            <h4>${a.id}</h4>
+                            <h5>${a.descripcion}</h4>
+                            `
+                                    ]
+                                }
+                            }]
+                        )
+                        )
+                    })
+                }
+        }
+        const tagMulti = [
+            'https://dainnin.alwaysdata.net/api/productos/',
+            crearTags
+
+        ]
+        const err404 = [
             {
-                '404': [
-                    {
-                        'h1': {
-                            children: ['ajajjajaj']
-                        }
-                    }
-                ],
+                'h1': {
+
+                    fetchEvent: tagMulti,
+                    id: 'asd'
+
+                }
+            }
+        ]
+
+            // Uso del fetchWithState
+            ;
+
+        HashEnabled();
+
+
+        await createUpdate(
+            {
+                '404': err404
+                ,
                 'a': [
                     {
                         'div': {
@@ -45,8 +93,8 @@
             },
             {
                 header: [{ h1: { children: ['a'] } }], footer: [{ h1: { children: ['a'] } }]
-            },
-            true
+            }
+
         )
     </script>
 </head>
@@ -61,8 +109,8 @@
 
 
     </main>
-  
-    
+
+
     <footer name="_footer">
 
     </footer>
