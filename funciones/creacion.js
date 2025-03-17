@@ -1,43 +1,54 @@
-import { $, atest } from 'https://dainnin.github.io/test/funciones/utilidades.js';
+
+
+
+import { $, atest } from '/modulos/funciones/utilidades.js';
+
+
+export const elements=(a)=>atest(a); 
+
 
 export const HashEnabled = (() => $.HashEnabled);
 
 const hPart = () => [$.hash === '' ? $.path.replace("/", "") : $.hash.replace("#", ""), `${$.hash}_${$.search["pages"]}`.replace("#", "")]
-const create = (Ebody) => atest(Ebody[hPart()[0]][hPart()[1]])
-export const createUpdate = (e, b) => {
+const create =  (Ebody) => atest( Ebody[hPart()[0]][hPart()[1]])
+export const createUpdate =async (e, b) => {
 
-    const createUpdateX = (e) => {
+
+    const createUpdateX =async (e) => {
         try {
 
+
+
             if ($.hash !== '' && $.path.replace('/', '') === '') {
-                console.log(2, $.hash,)
+                
                 $.voidMain()
-                $._main.appendChild(atest(e[$.hash.replace('#', '')]))
+                $._main.appendChild(atest(await e[$.hash.replace('#', '')]))
 
             } else if ($.hash === "" && $.path.replace('/', '') !== '') {
-                console.log(3, $.path.replace('/', ''), e)
+               
                 $.voidMain()
-                $._main.appendChild(atest(e[$.path.replace('/', '')]))
+                $._main.appendChild(atest(await e[$.path.replace('/', '')]))
+
 
             } else if ($.hash === "" && $.path === '') {
-                console.log(4)
+               
                 $.voidMain()
-                $._main.appendChild(atest(e[$.path]))
+                $._main.appendChild(atest(await e[$.path]))
 
             } else {
-                console.log(9)
+                
                 $.voidMain()
-                typeof e['404'] === 'function' ? e['404']() : $._main.appendChild(atest(e[404]))
+                typeof e['404'] === 'function' ? await e['404']() : $._main.appendChild(atest(await e[404]))
             }
         } catch (ee) {
             console.error('Jajaja no anda che')
             $.voidMain()
-            typeof e[404] === 'function' ? e['404']() : $._main.appendChild(atest(e[404]))
+            typeof e[404] === 'function' ? await e['404']() : $._main.appendChild(atest(await e[404]))
         };
     }
-    console.log(e)
+    
     window.addEventListener('hashchange', () => createUpdateX(e));
-    $._header.addEventListener("click", (event) => {
+    $._header.addEventListener("click", async (event) => {
 
         const originURL = location.origin
         const eventHash = event.target.hash
@@ -48,24 +59,26 @@ export const createUpdate = (e, b) => {
             if (event.target && targetN === ('A')) {
                 event.preventDefault()
 
+
+
                 if ('#' + $.hash !== eventHash ?
                     location.hash = eventHash : false && e[hPart()[0]] !== undefined) {
                     $.voidMain()
 
-                    $._main.appendChild(create(e))
+                    $._main.appendChild(await create(e))
                 } else if ($.hash === "" && $.path === '') {
                     $.voidMain()
-                    typeof e['index'] === 'function' ? e['index']() : $._main.appendChild(atest(e['index']))
+                    typeof e['index'] === 'function' ?await e['index']() : $._main.appendChild(await atest(e['index']))
                 }
 
             }
 
         } catch {
-            typeof e['404'] === 'function' ? e['404']() : $._main.appendChild(atest(e['404']))
+            typeof e['404'] === 'function' ? await e['404']() : $._main.appendChild(await atest(e['404']))
         }
     }
     )
-    $._main.addEventListener("click", (event) => {
+    $._main.addEventListener("click",async (event) => {
 
         const eventHash = event.target.hash
         const targetN = event.target.tagName
@@ -80,26 +93,36 @@ export const createUpdate = (e, b) => {
 
                     $.voidMain()
 
-                    $._main.appendChild(create(e))
+                    $._main.appendChild(await create(e))
                 } else if (location.hash === "") {
                     $.voidMain()
-                    typeof e['index'] === 'function' ? e['index']() : $._main.appendChild(atest(e['index']))
+                    typeof e['index'] === 'function' ?await e['index']() : $._main.appendChild(await atest(e['index']))
                 }
 
             }
         } catch {
-            typeof e['404'] === 'function' ? e['404']() : $._main.appendChild(atest(e['404']))
+            typeof e['404'] === 'function' ?await e['404']() : $._main.appendChild(await atest(e['404']))
         }
 
     }
     )
     if (b.header) {
-        $._header.appendChild(atest(b.header))
+        (async ()=>$._header.appendChild(await atest(b.header)))()
     }
     if (b.footer) {
-        $._footer.appendChild(atest(b.footer))
+        (async()=> $._footer.appendChild(await atest(b.footer)))()
     }
 
-    createUpdateX(e)
+     await createUpdateX(e)
 
 }
+
+
+
+
+
+/* X(Ebody, rutas,true); */
+
+
+
+

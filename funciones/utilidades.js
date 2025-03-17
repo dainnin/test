@@ -366,7 +366,9 @@ export const atest = (a, b = null) => {
 
           const element = document.createElement(tagName);
           const x = { ...attributes }
-
+          if(x.defineProperty){
+            Object.defineProperties(element,x.defineProperty)
+          }
           Object.assign(element, [x].filter(a => {
             delete a.children;
             return a.dataset ? "" : a
@@ -380,7 +382,43 @@ export const atest = (a, b = null) => {
             createElementsFromConfig(attributes.children, element);
 
           }
-
+          if(x.fetchEvent!==undefined && typeof x.fetchEvent[1]==='function'){
+            const fetchEvent =async(url)=> {
+                let data = null;
+                let isLoading = true;
+                let error = null;
+              
+          x.fetchEvent[1]({load:isLoading,element:element})
+                try {
+                               
+                  // Realizar la solicitud (fetch)
+                  const res = await fetch(url);
+              
+                  if (!res.ok) {
+                    // Manejo del error si la respuesta no es exitosa
+                    throw new Error(`Error: ${res.status} - ${res.statusText}`);
+                  }
+              
+                  // Procesar los datos obtenidos
+                  data = await res.json();
+                } catch (err) {
+                  // Capturar errores de red o en el procesamiento de datos
+                  error = err.message;
+                } finally {
+                  
+                  // Cambiar el estado de carga a completado
+                  isLoading = false;
+                }
+              
+                // Retornar los datos, el estado de carga y cualquier error
+                return { data, isLoading, error };
+              };
+              (async()=>{
+                const { data, isLoading, error } = await fetchEvent(x.fetchEvent[0]);
+                x.fetchEvent[1]({data:data,load:isLoading,error:error,element:element })
+              })()
+          
+          }
           if (parent) {
             // console.log("parent")
             return parent.appendChild(element);
