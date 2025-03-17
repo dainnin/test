@@ -15,6 +15,7 @@
     <script type="module" defer="true">
 
         import { createUpdate, HashEnabled, elements } from 'http://localhost:4063/modulos/funciones/creacion.js'
+        HashEnabled();
         const crearTags = ({ data, load, error, element }) => {
 
             if (load) {
@@ -63,7 +64,7 @@
             // Uso del fetchWithState
             ;
 
-        HashEnabled();
+        
 
 
         await createUpdate(
