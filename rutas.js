@@ -1,6 +1,6 @@
 
-import {   FPathAr, HTMLatDOM, voidElement, HTMLatObj } from "/modulos/funciones/creacion.js"
-import { BodyEstructura } from "/modulos/main/body/index.js";
+import {   FPathAr, HTMLatDOM, voidElement, HTMLatObj } from "/test/funciones/creacion.js"
+
 const FPathArr = FPathAr;
 const crearTags = ({ data, load, error, element }) => {
     voidElement(element)
@@ -53,8 +53,7 @@ export const rutas = {
     "/": HTMLatObj(`<h1 style="color:red;">Holaaa</h1>`),
     "productos": [{ div: { children: err404() } }]
     ,
-    'Weare':
-    BodyEstructura.BodyEstructura_0
+  
     ,
     "404": HTMLatObj(
         `<div>
