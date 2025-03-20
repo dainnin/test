@@ -1,4 +1,4 @@
-import { $, atest,parseHTML,voidThis,FPathArr } from '/modulos/funciones/utilidades.js';
+import { $, atest,parseHTML,voidThis,FPathArr } from '/test/funciones/utilidades.js';
 
 export const elements=(a)=>atest(a); 
 export const HTMLatDOM=(a)=>atest(parseHTML(a));
