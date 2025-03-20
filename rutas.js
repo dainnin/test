@@ -54,7 +54,7 @@ export const rutas = {
     "productos": [{ div: { children: err404() } }]
     ,
   
-    ,
+    
     "404": HTMLatObj(
         `<div>
        <h1 className="titulo"><a href="/" >Inicio </a></h1>
