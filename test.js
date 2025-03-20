@@ -1,5 +1,5 @@
 
-import {  HTMLatObj,classOnBody } from "/modulos/funciones/creacion.js"
+import {  HTMLatObj,classOnBody } from "/test/funciones/creacion.js"
 
 
 
