@@ -1,5 +1,3 @@
-
-
 export const BuscData = (estructura, prop, val) => {
   if (Array.isArray(estructura)) {
     for (const item of estructura) {
@@ -53,8 +51,8 @@ const QPPath = (req, enabled = false) => {
     }
   }
   if (enabled) {
-
-    hash.indexOf('#', 1) === -1 ? '' : inital.hash = hash.substring(hash.indexOf('#', 1))
+    
+    hash.indexOf('#', 1) === -1 ? inital.hash ='' : inital.hash = hash.substring(hash.indexOf('#', 1))
     Object.assign(inital, {
       path: hash.indexOf('#', 1) === -1 ? hash.replace('#', '') : hash.substring(1, hash.indexOf('#', 1) - 1)
     })
@@ -82,10 +80,8 @@ export function $$() {
   this._main = docBody.children._main;
   this._header = docChild._header;
   this._footer = docChild._footer;
-  this._topIndex = docChild._topIndex ? docChild._topIndex : {};
-  this._panel = docChild._panel;
   this._enabled = false;
-  //funciones
+
   this.setData = (a, b) => {
     b = JSON.parse(JSON.stringify(b).toLocaleLowerCase())
     return Object.assign(a.dataset, b)
@@ -97,26 +93,25 @@ export function $$() {
   }
 
 
-  this.crearTag = (tag, position = "lastChild") => {
-
-
-    const x = doc.createElement("_")
-    x.innerHTML = tag
-    const fargment = doc.createDocumentFragment()
-    Object.values(x.children).forEach(t => fargment.appendChild(t))
-    if (position !== "lastChild") {
-      position = this._main.children[position]
-    } else {
-      position = this._main[position]
-    }
-    return this._main.insertBefore(fargment, position)
-  }
   this.voidMain = () => {
 
     while (this._main.firstChild) {
       this._main.removeChild(this._main.firstChild);
     }
   }
+this.classInBody=({header,main,footer})=>{
+if(typeof header!=="undefined"){
+  Object.assign(this._header,{className:header})
+}
+if(typeof main!=="undefined"){
+  Object.assign(this._main,{className:main})
+}
+if(typeof header!=="undefined"){
+  Object.assign(this._footer,{className:footer})
+}
+
+}
+
   Object.defineProperties(this, {
     'hash': {
       get: () => QPPath(location, this.enabled).hash,
@@ -144,42 +139,14 @@ export function $$() {
         this._enabled ? this._enabled = false : this._enabled = true
         hash === '' ? (() => {
           location.hash += '#/';
-          pathname === '/' ? '' : location.pathname += '/'
+          
         })() : ''
       },
     }
 
   })
 
-  //Estilos
 
-  /* Object.assign(this._header, {
-    className: `
-        headerP
-        `
-
-  }) */
-  Object.assign(this._main, {
-    crearTag: this.crearTag,
-    name: "_main",
-    style: `
-        display: block;
-        `})
-
-  Object.assign(this._topIndex, {
-    className: "inicio",
-    style: `
-                position:fixed;
-                color:red;
-                bottom:50px;
-                right:25px;
-            `})
-
-  /* Object.assign(this._footer, {
-
-    style: `
-            color:red;
-        `}) */
 
 }
 export const $ = new $$()
@@ -220,58 +187,7 @@ const maped = (config) => {
 
 }
 
-export const parseHTML = (strings) => {
-  strings = strings.replace("\n", "{'\n'}")
-  const regex = /<(\w+)([^>]*?)>(.*?)<\/\1>/gis;
 
-  const matchToArray = (a) => Array.from(a.matchAll(regex));
-
-  const deconst = (maped, contain = {}) => {
-
-    matchToArray(maped).forEach((a) => {
-      let [innerOuter, tag, attr, innerCont] = a;
-
-      const props = {};
-      tag === "text" ? tag = "#text" : ""
-      const patron = /(\w+)=(".*?")/gis;
-      let coincidencia;
-      while ((coincidencia = patron.exec(attr)) !== null) {
-
-        const ky = coincidencia[1] !== "class" ? coincidencia[1] : "className"
-
-        props[ky] = coincidencia[2].substring(1, coincidencia[2].length - 1);
-      }
-
-      const tagE = {
-
-        ...props,
-        children: []
-      };
-
-
-      if (matchToArray(innerCont).length > 0) {
-
-        deconst(innerCont, tagE.children);
-
-      } else {
-        if (!tag === "img") {
-
-          tagE.children.push(innerCont ? innerCont : "");
-        } else {
-          delete tagE.children
-        }
-      }
-
-      tag === "#text" ? contain.push(innerCont) : contain.push({ [tag]: tagE })
-
-    });
-
-  };
-
-  const elements = [];
-  deconst(strings, elements);
-  return elements;
-}
 export const atest = (a, b = null) => {
 
 
@@ -352,7 +268,7 @@ export const atest = (a, b = null) => {
     Array.isArray(config) ? config : config = [config]
     config.forEach(item => {
 
-
+      
       if (typeof item === "string") {
 
         const element = document.createTextNode(item)
@@ -362,71 +278,79 @@ export const atest = (a, b = null) => {
           return parent.appendChild(element);
         }
       } else {
-        Object.entries(item).forEach(([tagName, attributes]) => {
 
-          const element = document.createElement(tagName);
-          const x = { ...attributes }
-          if(x.defineProperty){
-            Object.defineProperties(element,x.defineProperty)
-          }
-          Object.assign(element, [x].filter(a => {
-            delete a.children;
-            return a.dataset ? "" : a
-          })[0]
-          );
+        if (item !== undefined) {
+          Object.entries(item).forEach(([tagName, attributes]) => {
 
-          Object.assign(element.dataset, x.dataset)
+            const element = document.createElement(tagName);
+            const x = { ...attributes }
+            if (x.defineProperty) {
+              Object.defineProperties(element, x.defineProperty)
+            }
+            Object.assign(element, [x].filter(a => {
+              delete a.children;
+              return a.dataset ? "" : a
+            })[0]
+            );
 
-          if (attributes.children) {
+            Object.assign(element.dataset, x.dataset)
 
-            createElementsFromConfig(attributes.children, element);
+            if (attributes.children) {
 
-          }
-          if(x.fetchEvent!==undefined && typeof x.fetchEvent[1]==='function'){
-            const fetchEvent =async(url)=> {
+              createElementsFromConfig(attributes.children, element);
+
+            }
+            if (typeof x.fetchEvent === 'string') {
+              const temp = x.fetchEvent
+              x.fetchEvent = window[x.fetchEvent];
+              delete window[temp]
+
+            }
+            if (x.fetchEvent !== undefined && typeof x.fetchEvent[1] === 'function') {
+              const fetchEvent = async (url) => {
                 let data = null;
                 let isLoading = true;
                 let error = null;
-              
-          x.fetchEvent[1]({load:isLoading,element:element})
+
+                x.fetchEvent[1]({ load: isLoading, element: element })
                 try {
-                               
-                  // Realizar la solicitud (fetch)
+
+
                   const res = await fetch(url);
-              
+
                   if (!res.ok) {
-                    // Manejo del error si la respuesta no es exitosa
+
                     throw new Error(`Error: ${res.status} - ${res.statusText}`);
                   }
-              
-                  // Procesar los datos obtenidos
+
+
                   data = await res.json();
                 } catch (err) {
-                  // Capturar errores de red o en el procesamiento de datos
+
                   error = err.message;
                 } finally {
-                  
-                  // Cambiar el estado de carga a completado
+
                   isLoading = false;
                 }
-              
-                // Retornar los datos, el estado de carga y cualquier error
+
+
                 return { data, isLoading, error };
               };
-              (async()=>{
+              (async () => {
                 const { data, isLoading, error } = await fetchEvent(x.fetchEvent[0]);
-                x.fetchEvent[1]({data:data,load:isLoading,error:error,element:element })
+                x.fetchEvent[1]({ data: data, load: isLoading, error: error, element: element })
               })()
-          
-          }
-          if (parent) {
-            // console.log("parent")
-            return parent.appendChild(element);
-          } else {
-            // console.log("fragment")
-            return fargment.appendChild(element);
-          }
-        })
+
+            }
+            if (parent) {
+
+              return parent.appendChild(element);
+            } else {
+
+              return fargment.appendChild(element);
+            }
+          })
+        }
       };
     });
 
@@ -435,6 +359,92 @@ export const atest = (a, b = null) => {
 
   return fargment
 };
+
+
+export function parseHTML(htmlString) {
+  const domTree = [];
+  const tagRegex = /<\/?([a-zA-Z0-9]+)([^>]*)>|([^<]+)/g;
+  const stack = [];
+  let match;
+  while ((match = tagRegex.exec(htmlString)) !== null) {
+    const [fullMatch, tagName, attributes, textContent] = match;
+
+    if (textContent && textContent.trim()) {
+
+      const textNode = textContent.trim();
+
+      if (stack.length > 0) {
+
+        stack[stack.length - 1][Object.keys(stack[stack.length - 1])].children.push(Object.keys(stack[stack.length - 1])[0] !== 'script' ? textContent : '');
+      } else {
+        domTree.push(textNode);
+      }
+    } else if (fullMatch.startsWith('</')) {
+
+      const closedNode = stack.pop();
+      if (stack.length > 0) {
+        stack[stack.length - 1][Object.keys(stack[stack.length - 1])].children.push(closedNode);
+      } else {
+        domTree.push(closedNode);
+      }
+    } else if (tagName) {
+      const node = {
+        [tagName]: {
+
+          ...parseAttributes(attributes),
+          children: [],
+        }
+
+      };
+
+      stack.push(node);
+
+    }
+  }
+  return domTree;
+
+
+  function parseAttributes(attributeString) {
+    const attributes = {};
+    const attrRegex = /([a-zA-Z]+)="([^"]*)"/g;
+    let attrMatch;
+    while ((attrMatch = attrRegex.exec(attributeString)) !== null) {
+      attributes[attrMatch[1]] = attrMatch[2];
+    }
+    return attributes;
+  }
+}
+export const voidThis = (e) => {
+
+  while (e.firstChild) {
+    e.removeChild(e.firstChild);
+  }
+}
+export const  FPathArr=(data, key, value, newKeyValue)=> {
+  for (const item of data) {
+    for (const tag in item) {
+      const obj = item[tag];
+
+      // Si encontramos la combinación llave-valor, modificamos el objeto
+      if (obj[key] === value) {
+        Object.assign(obj, newKeyValue); // Agrega o modifica los valores especificados
+        return true;
+      }
+
+      // Si hay hijos, buscamos recursivamente
+      if (obj.children) {
+        const found = FPathArr(obj.children, key, value, newKeyValue);
+        if (found) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+
 
 export const fetchGen = async (url) => {
   var x = {}

@@ -1,128 +1,90 @@
-
-
-
-import { $, atest } from 'https://dainnin.github.io/test/funciones/utilidades.js';
-
+import { $, atest,parseHTML,voidThis,FPathArr } from '/modulos/funciones/utilidades.js';
 
 export const elements=(a)=>atest(a); 
-
-
+export const HTMLatDOM=(a)=>atest(parseHTML(a));
+export const HTMLatObj = parseHTML
+export const voidElement=voidThis
 export const HashEnabled = (() => $.HashEnabled);
+export const FPathAr=FPathArr
+export const classOnBody = $.classInBody
 
-const hPart = () => [$.hash === '' ? $.path.replace("/", "") : $.hash.replace("#", ""), `${$.hash}_${$.search["pages"]}`.replace("#", "")]
-const create =  (Ebody) => atest( Ebody[hPart()[0]][hPart()[1]])
 export const createUpdate =async (e, b) => {
 
 
     const createUpdateX =async (e) => {
+        
         try {
 
 
 
             if ($.hash !== '' && $.path.replace('/', '') === '') {
-                
+               
                 $.voidMain()
                 $._main.appendChild(atest(await e[$.hash.replace('#', '')]))
 
-            } else if ($.hash === "" && $.path.replace('/', '') !== '') {
-               
+            } else if ($.hash === "" && $.path.replace('/', '') !== '' && e[$.path.replace('/', '')]!==undefined) {
+                
                 $.voidMain()
                 $._main.appendChild(atest(await e[$.path.replace('/', '')]))
 
 
-            } else if ($.hash === "" && $.path === '') {
-               
+            } else if ($.hash === "" && ($.path === '/' || $.path === '')) {
+                
                 $.voidMain()
                 $._main.appendChild(atest(await e[$.path]))
 
             } else {
                 
                 $.voidMain()
-                typeof e['404'] === 'function' ? await e['404']() : $._main.appendChild(atest(await e[404]))
+                typeof e['404'] === 'function' ? await e['404']() : $._main.appendChild(atest(await e['404']))
             }
         } catch (ee) {
             console.error('Jajaja no anda che')
             $.voidMain()
             typeof e[404] === 'function' ? await e['404']() : $._main.appendChild(atest(await e[404]))
-        };
+        }
     }
     
     window.addEventListener('hashchange', () => createUpdateX(e));
-    $._header.addEventListener("click", async (event) => {
-
-        const originURL = location.origin
-        const eventHash = event.target.hash
-
-        const targetN = event.target.tagName
-        try {
-
-            if (event.target && targetN === ('A')) {
-                event.preventDefault()
-
-
-
-                if ('#' + $.hash !== eventHash ?
-                    location.hash = eventHash : false && e[hPart()[0]] !== undefined) {
-                    $.voidMain()
-
-                    $._main.appendChild(await create(e))
-                } else if ($.hash === "" && $.path === '') {
-                    $.voidMain()
-                    typeof e['index'] === 'function' ?await e['index']() : $._main.appendChild(await atest(e['index']))
-                }
-
-            }
-
-        } catch {
-            typeof e['404'] === 'function' ? await e['404']() : $._main.appendChild(await atest(e['404']))
-        }
-    }
-    )
-    $._main.addEventListener("click",async (event) => {
-
-        const eventHash = event.target.hash
-        const targetN = event.target.tagName
-
-        try {
-
-            if (event.target && targetN === ('A') && $.hash !== "") {
-                event.preventDefault()
-
-                if (location.hash !== eventHash ?
-                    location.hash = eventHash : false && e[hPart()[0]] !== undefined) {
-
-                    $.voidMain()
-
-                    $._main.appendChild(await create(e))
-                } else if (location.hash === "") {
-                    $.voidMain()
-                    typeof e['index'] === 'function' ?await e['index']() : $._main.appendChild(await atest(e['index']))
-                }
-
-            }
-        } catch {
-            typeof e['404'] === 'function' ?await e['404']() : $._main.appendChild(await atest(e['404']))
-        }
-
-    }
-    )
+    $._body.addEventListener("click",  (event)=>{
+        event.preventDefault()
+        const eTag=event.target.tagName
+        const eHref=event.target.href
+        
+        if(eTag==='A'&& eHref!==location.href&&eHref!==$.QPPath(location,true).url){
+        location.hash=`${eHref.replace(location.origin,'')}`    
+        createUpdateX(e)
+        
+        
+}
+    })
+    
     if (b.header) {
         (async ()=>$._header.appendChild(await atest(b.header)))()
     }
     if (b.footer) {
-        (async()=> $._footer.appendChild(await atest(b.footer)))()
+        
+        (async ()=> $._footer.appendChild(await atest(b.footer)))()
     }
 
      await createUpdateX(e)
 
 }
-
-
-
-
-
-/* X(Ebody, rutas,true); */
-
-
-
-
+export function deepFreeze(obj) {
+    // Congelar el objeto actual
+    Object.freeze(obj);
+  
+    // Recorrer las propiedades del objeto
+    Object.getOwnPropertyNames(obj).forEach(function (prop) {
+      // Si la propiedad es un objeto y no está congelada, lo congelamos recursivamente
+      if (
+        typeof obj[prop] === "object" &&
+        obj[prop] !== null &&
+        !Object.isFrozen(obj[prop])
+      ) {
+        deepFreeze(obj[prop]);
+      }
+    });
+  
+    return obj; // Devolver el objeto congelado
+  }
