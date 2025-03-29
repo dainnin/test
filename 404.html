@@ -10,8 +10,47 @@
 </head>
 
 <body>
-  
+  <h1>Ejemplo de Fetch con CORS</h1>
+  <button id="fetchData">Hacer Solicitud</button>
+  <div id="result">Aquí aparecerá el resultado.</div>
+
+  <script>
+    // URL del servidor (asegúrate de que tu servidor permita CORS)
+    const API_URL = "https://jsonplaceholder.typicode.com/posts/1";
+
+    // Función para hacer la solicitud Fetch
+    async function fetchData() {
+      const resultDiv = document.getElementById("result");
+      resultDiv.textContent = "Cargando...";
+      resultDiv.className = "";
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error en la solicitud: ${response.status}`);
+        }
+
+        const data = await response.json();
+        resultDiv.textContent = `Datos recibidos: ${JSON.stringify(data)}`;
+        resultDiv.className = "success";
+      } catch (error) {
+        resultDiv.textContent = `Ocurrió un error: ${error.message}`;
+        resultDiv.className = "error";
+      }
+    }
+
+    // Agregar funcionalidad al botón
+    document.getElementById("fetchData").addEventListener("click", fetchData);
+  </script>
     <div id="root"></div>
 </body>
+
+    
 
 </html>
