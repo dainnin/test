@@ -18,9 +18,7 @@
           method: "GET",
             mode:'cors',
             credentials:"include",
-           headers: {
-
-        });
+           );
 
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status}`);
