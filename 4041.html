@@ -1,1 +1,42 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/test/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="/test/logo192.png"/><link rel="stylesheet" href="https://dainnin.github.io/HTMLPubM/css/principal.css"><link rel="manifest" href="/test/manifest.json"/><title>React App</title><script defer="defer" src="/test/static/js/main.5d7eb7fe.js"></script><link href="/test/static/css/main.46d1c557.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/test/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="/test/logo192.png"/><link rel="stylesheet" href="https://dainnin.github.io/HTMLPubM/css/principal.css"><link rel="manifest" href="/test/manifest.json"/><title>React App</title><script defer="defer" src="/test/static/js/main.5d7eb7fe.js"></script><link href="/test/static/css/main.46d1c557.css" rel="stylesheet"></head><body>
+    <h1>Ejemplo de Fetch con CORS</h1>
+  <button id="fetchData">Hacer Solicitud</button>
+  <div id="result">Aquí aparecerá el resultado.</div>
+
+  <script>
+    // URL del servidor (asegúrate de que tu servidor permita CORS)
+    const API_URL = "https://dainnin.alwaysdata.net/api/checkToken";
+
+    // Función para hacer la solicitud Fetch
+    async function fetchData() {
+      const resultDiv = document.getElementById("result");
+      resultDiv.textContent = "Cargando...";
+      resultDiv.className = "";
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "GET",
+           headers: {
+    'Content-Type': 'application/json', // Similar a lo que hace Axios
+    'Accept': 'application/json',
+  },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error en la solicitud: ${response.status}`);
+        }
+
+        const data = await response.json();
+        resultDiv.textContent = `Datos recibidos: ${JSON.stringify(data)}`;
+        resultDiv.className = "success";
+      } catch (error) {
+        resultDiv.textContent = `Ocurrió un error: ${error.message}`;
+        resultDiv.className = "error";
+      }
+    }
+
+    // Agregar funcionalidad al botón
+    document.getElementById("fetchData").addEventListener("click", fetchData);
+  </script>
+  
+  <noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
