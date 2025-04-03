@@ -1,7 +1,7 @@
 
-import {  HTMLatObj } from "/modulos/funciones/creacion.js"
-import { $ } from '/modulos/funciones/utilidades.js';
-import {ab} from '/modulos/req/asd.js'
+import {  HTMLatObj } from "/test/funciones/creacion.js"
+import { $ } from '/test/funciones/utilidades.js';
+import {ab} from '/test/req/asd.js'
 async function login (event) {
     event.preventDefault()
     const form=event.target.form
