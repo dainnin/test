@@ -1,3 +1,42 @@
+function generateFlexiblePath(element) {
+  if (!element) return null;
+
+  let path = [];
+  
+  while (element.parentNode) {
+    let tagName = element.tagName.toLowerCase();
+    let selector = tagName;
+
+    // Comprobar varios atributos dinámicamente
+    let attributes = ['key', 'data-id', 'class'];
+    attributes.forEach(attr => {
+      if (element.hasAttribute(attr)) {
+        selector += `[${attr}="${element.getAttribute(attr)}"]`;
+      }
+    });
+
+    path.unshift(selector);
+    element = element.parentNode;
+  }
+
+  return path.join(' > ');
+}
+
+
+function acceder(objeto, concatenaciones) {
+  return concatenaciones.reduce((acumulador, actual) => {
+    if (typeof actual === 'function') {
+      // Si el elemento es una función, se invoca con el acumulador actual
+      return actual(acumulador);
+    } else if (typeof acumulador[actual] === 'function') {
+      // Si el elemento es un método, se llama al método
+      return acumulador[actual].bind(acumulador); // Retorna la función enlazada
+    } else {
+      // Si es una propiedad, simplemente accede a ella
+      return acumulador[actual];
+    }
+  }, objeto);
+}
 export const BuscData = (estructura, prop, val) => {
   if (Array.isArray(estructura)) {
     for (const item of estructura) {
@@ -17,6 +56,218 @@ export const BuscData = (estructura, prop, val) => {
   }
   return null;
 };
+function monitorIsConnected(element) {
+  
+const y =  new Proxy(element, {
+  get(target, prop) {
+    if (prop === 'target') {
+      if(target.state===undefined){
+          target.state=target.isConnected
+          
+      }
+      return target; // Retorna el elemento original si se accede a "target"
+    }
+    
+    return target[prop]; // Para otras propiedades, delegar al elemento original
+  },
+  set(target, prop, value) {
+    target[prop] = value;
+    
+    // Verificar manualmente si el elemento está conectado al DOM
+    if (prop === 'isConnected' || document.body.contains(target)) {
+      // console.log(`Elemento conectado al DOM:`, target);
+    } else {
+     
+      // console.log(`Elemento NO conectado al DOM:`, target);
+    }
+
+    return true;
+  }
+});
+y.state=y.isConnected//set
+setTimeout(()=>{y.state=y.isConnected},100)
+return y//get
+}
+export function proxyFlex(obj,p,renderFuncion) {
+  const suscriptores = new Set(); // Almacenar callbacks
+
+  // Método para agregar nuevas funciones al conjunto de suscriptores
+  const suscribir = (callback) => {
+  
+      if (typeof callback === 'function') {
+          suscriptores.add(callback);
+      }
+  };
+
+  // Método para notificar a todos los suscriptores
+  const notificar = () => suscriptores.forEach((callback) => callback());
+  const proxy = new Proxy(obj, {
+    set(target, prop, value) {
+      target[prop] = value;
+      console.log(`Propiedad '${prop}' actualizada en setGlobals:`, value);
+      notificar();
+      // Notifica a todos los suscriptores 
+      return true;
+    }, get(target, prop) {
+      if(prop===p){
+        
+      notificar();
+    }
+      return target[prop];
+    }
+  });
+  suscribir(renderFuncion);
+  // Suscribimos la función de renderizado
+  return {proxy,suscribir,suscriptores };
+}
+export function fetchResReq({ setGlobal }) {
+
+  if (typeof setGlobal === 'boolean' && setGlobal === true) {
+    this.setGlobals = { data: null, load: true, error: null, promise: null }
+    this.static={url:'',opciones:''}
+    
+  }
+
+  this.setStatic=(url)=>this.static={url:url[0],opciones:url[1]}
+  this.fetchE = async (url) => {
+    let data = null;
+    let isLoading = true;
+    let error = null;
+    let promise = null
+    let res
+    
+    if (typeof url === 'object') {
+
+      res = fetch(url[0], url[1]);
+      
+    } else {
+      res = fetch(url);
+    }
+    if (setGlobal) {
+
+      console.log("global")
+      
+      if (this.setGlobals.data) {
+      
+        return Promise.resolve(this.setGlobals.data)
+      };
+
+
+      this.setGlobals.load = true;
+
+      this.setGlobals.promise = res.then(
+        resp => {
+         
+          if (!resp.ok) {
+            throw new Error('Apa vemos que pasa en fetch ', resp.status)
+          }
+          
+          return resp.json();
+        }
+      ).then(datos => {
+
+        if (setGlobal) {
+
+          this.setGlobals = { data: datos, load: isLoading, error: error, promise: null }
+          return datos
+        }
+      }
+
+      ).catch(err => {
+
+
+        this.setGlobals = { data: data, load: isLoading, error: err, promise: null }
+        return data
+
+      }
+      )
+
+
+
+      return this.setGlobals.promise
+
+    } else {
+      
+      
+      try {
+        res=await res
+        if (!res.ok) {
+          
+          isLoading = false;
+          throw new Error(`Error: ${res.status} - ${res.statusText}`);
+        }
+
+        isLoading = false;
+        
+         data = await res.json();
+      } catch (err) {
+        isLoading = false;
+        error = err;
+        
+      } 
+
+
+      return { data, isLoading, error };
+    }
+
+
+
+  }
+
+  Object.defineProperties(this, {
+
+  'fetchR':{
+  get: async () => {
+    let data = null;
+    let isLoading = true;
+    let error = null;
+    
+    let res
+    
+    if (typeof this.static.url === 'string' && this.static.opciones) {
+      
+      res =await fetch(this.static.url, this.static.opciones);
+      
+    } else {
+      res =await fetch(this.static.url);
+    }
+    
+      
+      
+      try {
+        res= res
+        if (!res.ok) {
+          
+          isLoading = false;
+          throw new Error(`Error: ${res.status} - ${res.statusText}`);
+        }
+
+        isLoading = false;
+        
+         data = await res.json();
+     
+      } catch (err) {
+        isLoading = false;
+        error = err;
+        
+      } 
+
+      Object.assign(this.setGlobals,{ data: data, load: isLoading, error: error, promise: null })
+      
+      return { data, isLoading, error };
+    
+
+
+
+  }
+
+}
+  }
+
+  )
+
+}
+
 const QPPath = (req, enabled = false) => {
   const inital = { search: {}, path: '', hash: '' }
   if (req === undefined) {
@@ -51,8 +302,8 @@ const QPPath = (req, enabled = false) => {
     }
   }
   if (enabled) {
-    
-    hash.indexOf('#', 1) === -1 ? inital.hash ='' : inital.hash = hash.substring(hash.indexOf('#', 1))
+
+    hash.indexOf('#', 1) === -1 ? inital.hash = '' : inital.hash = hash.substring(hash.indexOf('#', 1))
     Object.assign(inital, {
       path: hash.indexOf('#', 1) === -1 ? hash.replace('#', '') : hash.substring(1, hash.indexOf('#', 1) - 1)
     })
@@ -81,6 +332,29 @@ export function $$() {
   this._header = docChild._header;
   this._footer = docChild._footer;
   this._enabled = false;
+  this._referenciasInternas = [];
+
+  // Método para agregar funciones al array de referencias
+  this.referencias = (...funciones) => {
+    const temp = []
+    funciones.forEach((funcion) => {
+
+      if (typeof funcion === 'function') {
+
+        this._referenciasInternas.forEach(a => typeof a === 'function' ? temp.push(a.name) : console.log('error...'))
+
+
+        // Agregar funciones al array
+
+        temp.indexOf(funcion.name) === -1 ? this._referenciasInternas.push(funcion) : console.log('nope')
+      } else {
+
+        console.error(`"${funcion}" no es una función válida.`, error);
+      }
+
+
+    });
+  };
 
   this.setData = (a, b) => {
     b = JSON.parse(JSON.stringify(b).toLocaleLowerCase())
@@ -99,18 +373,18 @@ export function $$() {
       this._main.removeChild(this._main.firstChild);
     }
   }
-this.classInBody=({header,main,footer})=>{
-if(typeof header!=="undefined"){
-  Object.assign(this._header,{className:header})
-}
-if(typeof main!=="undefined"){
-  Object.assign(this._main,{className:main})
-}
-if(typeof header!=="undefined"){
-  Object.assign(this._footer,{className:footer})
-}
+  this.classInBody = ({ header, main, footer }) => {
+    if (typeof header !== "undefined") {
+      Object.assign(this._header, { className: header })
+    }
+    if (typeof main !== "undefined") {
+      Object.assign(this._main, { className: main })
+    }
+    if (typeof header !== "undefined") {
+      Object.assign(this._footer, { className: footer })
+    }
 
-}
+  }
 
   Object.defineProperties(this, {
     'hash': {
@@ -139,11 +413,16 @@ if(typeof header!=="undefined"){
         this._enabled ? this._enabled = false : this._enabled = true
         hash === '' ? (() => {
           location.hash += '#/';
-          
+
         })() : ''
       },
+    },
+    'test': {
+      get: () => fetchResReq
+    },
+    'ProxyElement':{
+      get:()=>monitorIsConnected
     }
-
   })
 
 
@@ -186,7 +465,7 @@ const maped = (config) => {
   }).at()
 
 }
-
+// Función monitorInsertion con Proxy
 
 export const atest = (a, b = null) => {
 
@@ -263,27 +542,42 @@ export const atest = (a, b = null) => {
 
 
   const fargment = $._doc.createDocumentFragment()
+  
   const createElementsFromConfig = (config, parent = null) => {
 
     Array.isArray(config) ? config : config = [config]
     config.forEach(item => {
 
-      
+
       if (typeof item === "string") {
 
         const element = document.createTextNode(item)
-
+        
+        
         if (parent) {
-
+          
           return parent.appendChild(element);
+           
         }
       } else {
-
+        
         if (item !== undefined) {
           Object.entries(item).forEach(([tagName, attributes]) => {
 
-            const element = document.createElement(tagName);
+            const elementx = monitorIsConnected(document.createElement(tagName))
+        const element = elementx.target
             const x = { ...attributes }
+            Object.keys(x).forEach((i) => {
+              
+              if (typeof x[i] === 'string' && x[i].length - 3 === x[i].indexOf('||F')) {
+                
+                $._referenciasInternas.forEach((p, m) => {
+                  typeof x[i] === 'string' && p.name === x[i].replace('||F', '') ? x[i] = $._referenciasInternas[m] : ''
+                 
+                })
+                
+              }
+            })
             if (x.defineProperty) {
               Object.defineProperties(element, x.defineProperty)
             }
@@ -300,53 +594,48 @@ export const atest = (a, b = null) => {
               createElementsFromConfig(attributes.children, element);
 
             }
-            if (typeof x.fetchEvent === 'string') {
-              const temp = x.fetchEvent
-              x.fetchEvent = window[x.fetchEvent];
-              delete window[temp]
-
-            }
-            if (x.fetchEvent !== undefined && typeof x.fetchEvent[1] === 'function') {
-              const fetchEvent = async (url) => {
-                let data = null;
-                let isLoading = true;
-                let error = null;
-
-                x.fetchEvent[1]({ load: isLoading, element: element })
-                try {
 
 
-                  const res = await fetch(url);
+            if (x.fetchEvent !== undefined) {
+              if (Array.isArray(x.fetchEvent)) {
+                (async () => {
+                  
+                  if (typeof x.fetchEvent[0] === 'object' && x.fetchEvent[0].promise) {
+                    const { data, isLoading, error, promise } = x.fetchEvent[0]
 
-                  if (!res.ok) {
-
-                    throw new Error(`Error: ${res.status} - ${res.statusText}`);
+                    x.fetchEvent[1]({ data: data, load: isLoading, error: error, element: element, promise: promise })
+                  } else {
+                    const res = new fetchResReq({});
+                    const { data, isLoading, error } = await res.fetchE(x.fetchEvent[0])
+                    x.fetchEvent[1]({ data: data, load: isLoading, error: error, element: element })
                   }
 
 
-                  data = await res.json();
-                } catch (err) {
+                })()
+              } else if (typeof x.fetchEvent === 'function') {
+                (async () => {
+                  
+                  const res = new fetchResReq({});
 
-                  error = err.message;
-                } finally {
-
-                  isLoading = false;
-                }
+                  const { data, isLoading, error } = await res.fetchE(x.fetchEvent.url)
+                  x.fetchEvent({ data: data, load: isLoading, error: error, element: element })
 
 
-                return { data, isLoading, error };
-              };
-              (async () => {
-                const { data, isLoading, error } = await fetchEvent(x.fetchEvent[0]);
-                x.fetchEvent[1]({ data: data, load: isLoading, error: error, element: element })
-              })()
 
+                })()
+              }
             }
+
             if (parent) {
-
+              Object.keys(element).forEach(a=>{
+                a.indexOf('AUTO')===-1?'':element[a]()
+              })
+              
               return parent.appendChild(element);
+              
             } else {
-
+              
+              
               return fargment.appendChild(element);
             }
           })
@@ -356,7 +645,8 @@ export const atest = (a, b = null) => {
 
   };
   createElementsFromConfig(a, b)
-
+ 
+  
   return fargment
 };
 
@@ -414,13 +704,16 @@ export function parseHTML(htmlString) {
     return attributes;
   }
 }
-export const voidThis = (e) => {
+export const voidThis = (e, b = false) => {
+  if (!b) {
+    while (e.firstChild) {
+      e.removeChild(e.firstChild);
+    }
+  } else {
 
-  while (e.firstChild) {
-    e.removeChild(e.firstChild);
   }
 }
-export const  FPathArr=(data, key, value, newKeyValue)=> {
+export const FPathArr = (data, key, value, newKeyValue) => {
   for (const item of data) {
     for (const tag in item) {
       const obj = item[tag];
@@ -446,26 +739,3 @@ export const  FPathArr=(data, key, value, newKeyValue)=> {
 
 
 
-export const fetchGen = async (url) => {
-  var x = {}
-  const req = async () => {
-    try {
-      const data = await fetch(url);
-
-      if (!data.ok) return '<h1 textContent="error"></h1>'
-      const res = await data.text();
-      x = res
-      return eval(`(${res})`);
-    } catch (e) {
-      console.log(e)
-      return '<h1 textContent="error"></h1>'
-    }
-
-  }
-
-  await req().then(z => Object.assign(x, z))
-
-
-  return x
-
-}
