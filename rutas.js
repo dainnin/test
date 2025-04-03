@@ -1,7 +1,7 @@
 
-import { LoginForm } from "/modulos/main/login.js";
-import { HTMLatDOM, voidElement, HTMLatObj } from "/modulos/funciones/creacion.js"
-import { $ } from '/modulos/funciones/utilidades.js';
+import { LoginForm } from "/test/main/login.js";
+import { HTMLatDOM, voidElement, HTMLatObj } from '/test/funciones/creacion.js"
+import { $ } from '/test/funciones/utilidades.js';
 
 
  async function crearTags ({ data, load, error, element })  {
