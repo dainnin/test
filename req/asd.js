@@ -1,4 +1,4 @@
-import { $, proxyFlex, parseHTML, voidThis, fetchResReq } from '/modulos/funciones/utilidades.js';
+import { $, proxyFlex, parseHTML, voidThis, fetchResReq } from '/test/funciones/utilidades.js';
 
  const abc = new fetchResReq({ setGlobal: true });
 abc.setStatic(["https://dainnin.alwaysdata.net/api/checkToken", {
