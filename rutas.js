@@ -1,6 +1,6 @@
 
 import { LoginForm } from "/test/main/login.js";
-import { HTMLatDOM, voidElement, HTMLatObj } from '/test/funciones/creacion.js"
+import { HTMLatDOM, voidElement, HTMLatObj } from '/test/funciones/creacion.js'
 import { $ } from '/test/funciones/utilidades.js';
 
 
