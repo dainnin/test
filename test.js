@@ -73,7 +73,8 @@ async function fetchHeader() {
     const { url, opciones } = ab.static
 
     await fetch(url, opciones).then(a => a.json())
-        .then(() => {
+        .then((a) => {
+           alert(String(a)) 
             $.path==='/login'?location.hash='/':''
             voidElement(element);
             element.appendChild(
