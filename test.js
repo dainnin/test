@@ -71,8 +71,8 @@ async function fetchHeader() {
                 `)
     );
     const { url, opciones } = ab.static
-alert('entrando a render')
-    await ab.fetchE(url, opciones).then(a => a.json())
+alert(JSON.stringify(  ab.fetchE(url, opciones)))
+    ab.fetchE(url, opciones).then(a => a.json())
         .then((a) => {
             
            alert(JSON.stringify(a))
