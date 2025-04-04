@@ -72,7 +72,7 @@ async function fetchHeader() {
     );
     const { url, opciones } = ab.static
 alert(JSON.stringify(  ab.fetchE(url, opciones)))
-    ab.fetchE(url, opciones).then(a => a.json())
+    ab.fetchE([url, opciones]).then(a => a.json())
         .then((a) => {
             
            alert(JSON.stringify(a))
