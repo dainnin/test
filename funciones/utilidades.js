@@ -120,152 +120,105 @@ export function proxyFlex(obj,p,renderFuncion) {
   // Suscribimos la función de renderizado
   return {proxy,suscribir,suscriptores };
 }
-export function fetchResReq({ setGlobal }) {
 
+export function fetchResReq({ setGlobal }) {
   if (typeof setGlobal === 'boolean' && setGlobal === true) {
-    this.setGlobals = { data: null, load: true, error: null, promise: null }
-    this.static={url:'',opciones:''}
-    
+    this.setGlobals = { data: null, load: true, error: null, promise: null };
+    this.static = { url: '', opciones: '' };
   }
 
-  this.setStatic=(url)=>this.static={url:url[0],opciones:url[1]}
+  // Cache temporal para reducir repetidos chequeos innecesarios
+  const cacheTemp = new Map();
+
+  this.setStatic = (url) => this.static = { url: url[0], opciones: url[1] };
+
   this.fetchE = async (url) => {
+    const cacheKey = typeof url === 'object' ? JSON.stringify(url) : url;
+
+    // Verificar si ya existe en caché
+    if (cacheTemp.has(cacheKey)) {
+      console.log("Usando caché temporal:", cacheKey);
+      return cacheTemp.get(cacheKey);
+    }
+
     let data = null;
     let isLoading = true;
     let error = null;
-    let promise = null
-    let res
-    
-    if (typeof url === 'object') {
 
-      res = fetch(url[0], url[1]);
-      
-    } else {
-      res = fetch(url);
-    }
-    if (setGlobal) {
+    try {
+      const res = typeof url === 'object' ? fetch(url[0], url[1]) : fetch(url);
 
-      console.log("global")
-      
-      if (this.setGlobals.data) {
-      
-        return Promise.resolve(this.setGlobals.data)
-      };
-
-
-      this.setGlobals.load = true;
-
-      this.setGlobals.promise = res.then(
-        resp => {
-         
-          if (!resp.ok) {
-            throw new Error('Apa vemos que pasa en fetch ', resp.status)
-          }
-          
+      const fetchPromise = res
+        .then(resp => {
+          if (!resp.ok) throw new Error(`Error: ${resp.status}`);
           return resp.json();
-        }
-      ).then(datos => {
+        })
+        .then(datos => {
+          if (setGlobal) {
+            this.setGlobals = { data: datos, load: false, error: null, promise: null };
+          }
 
-        if (setGlobal) {
+          cacheTemp.set(cacheKey, Promise.resolve({ data: datos, isLoading: false, error: null }));
+          return { data: datos, isLoading: false, error: null };
+        })
+        .catch(err => {
+          if (setGlobal) {
+            this.setGlobals = { data: null, load: false, error: err, promise: null };
+          }
 
-          this.setGlobals = { data: datos, load: isLoading, error: error, promise: null }
-          return datos
-        }
-      }
+          cacheTemp.set(cacheKey, Promise.resolve({ data: null, isLoading: false, error: err }));
+          return { data: null, isLoading: false, error: err };
+        });
 
-      ).catch(err => {
+      cacheTemp.set(cacheKey, fetchPromise); // Almacenar la promesa en curso en el caché
+      return fetchPromise;
+    } catch (err) {
+      isLoading = false;
+      error = err;
 
-
-        this.setGlobals = { data: data, load: isLoading, error: err, promise: null }
-        return data
-
-      }
-      )
-
-
-
-      return this.setGlobals.promise
-
-    } else {
-      
-      
-      try {
-        res=await res
-        if (!res.ok) {
-          
-          isLoading = false;
-          throw new Error(`Error: ${res.status} - ${res.statusText}`);
-        }
-
-        isLoading = false;
-        
-         data = await res.json();
-      } catch (err) {
-        isLoading = false;
-        error = err;
-        
-      } 
-
-
-      return { data, isLoading, error };
+      cacheTemp.set(cacheKey, Promise.resolve({ data: null, isLoading: false, error: err }));
+      return { data: null, isLoading: false, error: err };
     }
-
-
-
-  }
+  };
 
   Object.defineProperties(this, {
+    'fetchR': {
+      get: async () => {
+        const { url, opciones } = this.static;
 
-  'fetchR':{
-  get: async () => {
-    let data = null;
-    let isLoading = true;
-    let error = null;
-    
-    let res
-    
-    if (typeof this.static.url === 'string' && this.static.opciones) {
-      
-      res =await fetch(this.static.url, this.static.opciones);
-      
-    } else {
-      res =await fetch(this.static.url);
-    }
-    
-      
-      
-      try {
-        res= res
-        if (!res.ok) {
-          
+        let data = null;
+        let isLoading = true;
+        let error = null;
+
+        try {
+          // Siempre forzar una nueva solicitud
+          const res = await fetch(url, opciones);
+
+          if (!res.ok) throw new Error(`Error: ${res.status}`);
+          data = await res.json();
+
+          // Actualizar el estado global
+          if (setGlobal) {
+            Object.assign(this.setGlobals, { data, load: false, error: null, promise: null });
+          }
+
+          return { data, isLoading: false, error: null };
+        } catch (err) {
+          error = err;
           isLoading = false;
-          throw new Error(`Error: ${res.status} - ${res.statusText}`);
+
+          if (setGlobal) {
+            Object.assign(this.setGlobals, { data: null, load: false, error });
+          }
+
+          return { data: null, isLoading, error };
         }
+      }
+    }
+  });
 
-        isLoading = false;
-        
-         data = await res.json();
-     
-      } catch (err) {
-        isLoading = false;
-        error = err;
-        
-      } 
-
-      Object.assign(this.setGlobals,{ data: data, load: isLoading, error: error, promise: null })
-      
-      return { data, isLoading, error };
-    
-
-
-
-  }
-
-}
-  }
-
-  )
-
+  // Limpiar el caché temporal automáticamente después de 5 segundos
+  setTimeout(() => cacheTemp.clear(), 5000);
 }
 
 const QPPath = (req, enabled = false) => {
