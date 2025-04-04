@@ -72,7 +72,7 @@ async function fetchHeader() {
     );
     const { url, opciones } = ab.static
 
-    await fetch(url, opciones).then(a => a.json())
+    await ab.fetchE(url, opciones).then(a => a.json())
         .then((a) => {
             
            alert(JSON.stringify(a))
