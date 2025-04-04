@@ -74,9 +74,9 @@ async function fetchHeader() {
 
     await fetch(url, opciones).then(a => a.json())
         .then((a) => {
-            alert(a)
-           alert(String(a))
-            alert('fallo')
+            
+           alert(JSON.stringfity(a))
+            
             $.path==='/login'?location.hash='/':''
             voidElement(element);
             element.appendChild(
