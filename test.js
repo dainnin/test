@@ -4,11 +4,12 @@ import { HTMLatDOM, voidElement, HTMLatObj, classOnBody } from "/test/funciones/
 
 import { ab, setStateCheck, setStateArr } from "/test/req/asd.js"
 
+
 const crearTagsHeader = () => {
 
     return HTMLatObj(`
     <a href="/">
-       <img src="/logo192.png" alt="logo" className="App-logo"/></img>
+       <img src="/test/logo192.png" alt="logo" className="App-logo"/></img>
     </a>
     <div>
       <label>Buscar</label>
@@ -16,8 +17,8 @@ const crearTagsHeader = () => {
       <button> <a href="">Buscar</a></button>
     </div> 
   <div>
-    <div>
-     
+    <div id="Avatar" fetchAUTO="fetchAvatar||F">
+    
     </div>
     <nav>
         <ul className="menu" id="menuHeader" fetchAUTO="fetchHeader||F">
@@ -44,6 +45,7 @@ async function fetchHeader() {
     }
 
     async function logout() {
+        
         const req = new $.test({});
         req.fetchE([
             "https://dainnin.alwaysdata.net/api/logout",
@@ -56,13 +58,14 @@ async function fetchHeader() {
                 mode: 'cors',
                 credentials: "include",
             }
-        ]);
-        ab.fetchR
+        ]).then(a=>{ab.fetchR});
+       
 
     }
     $.referencias(logout);
+    
     voidElement(element);
-    // console.log(`Elemento conectado al DOM:`, target);
+     
     element.appendChild(
         HTMLatDOM(`
                     <li data-key="1"><a href="/productos">Productos</a></li>
@@ -70,15 +73,13 @@ async function fetchHeader() {
                     <li><a href="/registro">Unirte</a></li>
                 `)
     );
-    const { url, opciones } = ab.static
-alert(JSON.stringify(  ab.fetchE(url, opciones)))
-    ab.fetchE([url, opciones]).then(a => a.json())
-        .then((a) => {
+    
+    
+    setTimeout( ()=>{
             
-           alert(JSON.stringify(a))
-            
+            if(ab.setGlobals.data){
             $.path==='/login'?location.hash='/':''
-            voidElement(element);
+                voidElement(element);
             element.appendChild(
                 HTMLatDOM(`
             <li data-key="1"><a href="/productos">Productos</a></li>
@@ -87,13 +88,43 @@ alert(JSON.stringify(  ab.fetchE(url, opciones)))
             <li><a href="/" onclick="logout||F">Cerrar sesión</a></li>
         `)
             );
-        }).catch(()=>{})
+        }
+        },300)
 
 }
+async function fetchAvatar() {
+    const element = this || document.getElementById('Avatar')
+    let qwe = false
+    
+    if (!qwe && element !== undefined) {
+        setStateArr.forEach(a => {
 
-// Función para actualizar el DOM con lógica dinámica
+            element instanceof Element && a === element.fetchAUTO ? qwe = true : ''
+        });
+        setStateCheck(element.fetchAUTO)
+    }
+   
+    
+    voidElement(element);
+   
+       
+    
+       setTimeout(()=> {if(ab.setGlobals.data){
+            console.log('...?')
+            element.appendChild( HTMLatDOM(`
+            <h3>
+            User: ${ab.setGlobals.data.user}
+            </h3>
+            <h4>
+            Mail: ${ab.setGlobals.data.email}
+            </h4>
+        `))
+    
+}},300)
+    
+}
 
-$.referencias(fetchHeader)
+$.referencias(fetchHeader,fetchAvatar)
 
 
 
@@ -106,7 +137,7 @@ export const footer = HTMLatObj(`${(() => {
 <link rel="stylesheet" href="/modulos/css/index.css"></link>
 <link rel="stylesheet" href="https://dainnin.github.io/HTMLPubM/css/principal.css"></link>
 <link rel="stylesheet" href="/modulos/css/App.css"></link>
-<a href="/"><img src="/logo192.png" alt="logo"/></img></a>
+<a href="/"><img src="/test/logo192.png" alt="logo"/></img></a>
 <nav>
     <ul className="menu">
         <li><a href="/contacto">Contactanos</a></li>
