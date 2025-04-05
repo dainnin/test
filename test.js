@@ -105,12 +105,11 @@ async function fetchAvatar() {
     }
    
     
-    voidElement(element);
-   
-       
+     voidElement(element);
     
        setTimeout(()=> {if(ab.setGlobals.data){
-            console.log('...?')
+           
+    voidElement(element);
             element.appendChild( HTMLatDOM(`
             <h3>
             User: ${ab.setGlobals.data.user}
