@@ -1,5 +1,5 @@
-import { HTMLatDOM, voidElement, HTMLatObj } from "test/modulos/funciones/creacion.js"
-import { $ } from 'test/modulos/funciones/utilidades.js';
+import { HTMLatDOM, voidElement, HTMLatObj } from "/test/modulos/funciones/creacion.js"
+import { $ } from '/test/modulos/funciones/utilidades.js';
 
 
  async function crearTags ({ data, load, error, element })  {
