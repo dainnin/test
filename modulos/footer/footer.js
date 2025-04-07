@@ -1,5 +1,5 @@
 
-import {  HTMLatObj, classOnBody } from "/modulos/funciones/creacion.js"
+import {  HTMLatObj, classOnBody } from "/test/modulos/funciones/creacion.js"
 
 
 export const footer = HTMLatObj(`${(() => {
