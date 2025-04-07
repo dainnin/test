@@ -1,7 +1,7 @@
-import { createUpdate, HashEnabled } from '/modulos/funciones/creacion.js'
-import { rutas } from '/modulos/enrutador/rutas.js'
-import { footer } from '/modulos/footer/footer.js';
-import { header } from '/modulos/header/header.js';
+import { createUpdate, HashEnabled } from '/test/modulos/funciones/creacion.js'
+import { rutas } from '/test/modulos/enrutador/rutas.js'
+import { footer } from '/test/modulos/footer/footer.js';
+import { header } from '/test/modulos/header/header.js';
 
 
 HashEnabled();
