@@ -1,4 +1,4 @@
-import { proxyFlex ,fetchResReq } from '/modulos/funciones/utilidades.js';
+import { proxyFlex ,fetchResReq } from '/test/modulos/funciones/utilidades.js';
 
  const abc = new fetchResReq({ setGlobal: true });
 abc.setStatic(["http://localhost:3069/api/checkToken", {
