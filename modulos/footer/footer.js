@@ -7,11 +7,11 @@ export const footer = HTMLatObj(`${(() => {
     classOnBody({ header: "flexAround", footer: "flexAround" })
     return ""
 })()}
-<link rel="stylesheet" href="/modulos/css/index.css"></link>
+<link rel="stylesheet" href="/test/modulos/css/index.css"></link>
 <link rel="stylesheet" href="https://dainnin.github.io/HTMLPubM/css/principal.css"></link>
-<link rel="stylesheet" href="/modulos/css/App.css"></link>
+<link rel="stylesheet" href="/test/modulos/css/App.css"></link>
 <a href="/">
-<img src="/modulos/img/logo192.png" alt="logo"/></img>
+<img src="/test/modulos/img/logo192.png" alt="logo"/></img>
 </a>
 <nav>
     <ul className="menu">
