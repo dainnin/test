@@ -61,13 +61,13 @@ export const createUpdate = async (e, b) => {
             if (eTag === 'IMG' & Father.tagName === 'A' && eHref !== location.href && eHref !== $.QPPath(location, true).url) {
                 location.hash = `${Father.href.replace(location.origin, '')
                     }`
-                    createUpdateX(e)
+                    
             }
             if (eTag === 'A' && eHref !== location.href && eHref !== $.QPPath(location, true).url) {
                 
                 location.hash = `${eHref.replace(location.origin, '')
                     }`
-                    createUpdateX(e)
+                    
             }
 
         }
