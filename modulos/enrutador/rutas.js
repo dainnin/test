@@ -1,6 +1,6 @@
 
 
-import { HTMLatObj } from "/modulos/funciones/creacion.js"
+import { HTMLatObj } from "/test/modulos/funciones/creacion.js"
 
 
 export const rutas = {
@@ -8,7 +8,7 @@ export const rutas = {
 
     "productos": {
         componente: 'productos',
-        urlModulo: '/modulos/main/productos/productos.js',
+        urlModulo: '/test/modulos/main/productos/productos.js',
     },
 
     "404": HTMLatObj(
@@ -30,6 +30,6 @@ export const rutas = {
 `),
     "login": {
         componente: 'LoginForm',
-        urlModulo: '/modulos/main/login.js'
+        urlModulo: '/test/modulos/main/login.js'
     },
 }
