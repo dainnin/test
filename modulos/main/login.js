@@ -1,8 +1,8 @@
 
-import { HTMLatObj } from "/modulos/funciones/creacion.js"
-import { $ } from '/modulos/funciones/utilidades.js';
-import { ab } from '/modulos/req/checkToken.js'
-import { urls } from '/modulos/env.js';
+import { HTMLatObj } from "/test/modulos/funciones/creacion.js"
+import { $ } from '/test/modulos/funciones/utilidades.js';
+import { ab } from '/test/modulos/req/checkToken.js'
+import { urls } from '/test/modulos/env.js';
 async function login(event) {
     event.preventDefault()
     const form = event.target.form
