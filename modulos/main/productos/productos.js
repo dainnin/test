@@ -1,6 +1,6 @@
-import { HTMLatDOM, voidElement, HTMLatObj } from "/test/modulos/funciones/creacion.js"
-import { $ } from '/test/modulos/funciones/utilidades.js';
-
+import { HTMLatDOM, voidElement, HTMLatObj } from "/modulos/funciones/creacion.js"
+import { $ } from '/modulos/funciones/utilidades.js';
+import { urls } from '/modulos/env.js';
 
  async function crearTags ({ data, load, error, element })  {
    
@@ -28,7 +28,7 @@ import { $ } from '/test/modulos/funciones/utilidades.js';
  }
  Object.defineProperties(crearTags,{
      'url':{
-         get:()=>'https://dainnin.alwaysdata.net/api/productos/'
+         get:()=>`${urls.online.api}productos/`
      }
  })
 export const productos = () => {

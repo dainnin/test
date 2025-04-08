@@ -1,16 +1,18 @@
+import { $,fetchResReq } from '/modulos/funciones/utilidades.js';
+export const FETCH = new fetchResReq({})
+import { HTMLatObj } from "/modulos/funciones/creacion.js"
 
 
-import { HTMLatObj } from "/test/modulos/funciones/creacion.js"
-
+console.log($.urls)
 
 export const rutas = {
     "/": HTMLatObj(`<h1 style="color:red;">Holaaa</h1>`),
 
     "productos": {
         componente: 'productos',
-        urlModulo: '/test/modulos/main/productos/productos.js',
+        urlModulo: '/modulos/main/productos/productos.js',
     },
-
+    "testText": HTMLatObj(await FETCH.text('/modulos/test.html')),
     "404": HTMLatObj(
         `<div>
        <h1 className="titulo"><a href="/" >Inicio </a></h1>
@@ -30,6 +32,6 @@ export const rutas = {
 `),
     "login": {
         componente: 'LoginForm',
-        urlModulo: '/test/modulos/main/login.js'
+        urlModulo: '/modulos/main/login.js'
     },
 }

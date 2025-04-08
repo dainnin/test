@@ -1,4 +1,4 @@
-import { $, atest, parseHTML, voidThis} from '/test/modulos/funciones/utilidades.js';
+import { $, atest, parseHTML, voidThis} from '/modulos/funciones/utilidades.js';
 
 export const elements = (a) => atest(a);
 export const HTMLatDOM = (a) => atest(parseHTML(a));
@@ -43,10 +43,7 @@ export const createUpdate = async (e, b) => {
         }
     }
 
-    window.addEventListener('hashchange',async(ty)=>{
-        
-       await createUpdateX(e)
-    });
+    
     
    
     $._body.addEventListener("click", (event) => {
@@ -64,7 +61,7 @@ export const createUpdate = async (e, b) => {
                     
             }
             if (eTag === 'A' && eHref !== location.href && eHref !== $.QPPath(location, true).url) {
-                
+              
                 location.hash = `${eHref.replace(location.origin, '')
                     }`
                     
@@ -72,6 +69,10 @@ export const createUpdate = async (e, b) => {
 
         }
     })
+    window.addEventListener('hashchange',async(ty)=>{
+        
+        await createUpdateX(e)
+     });
     if (b.header) {
         (async () => $._header.appendChild(await importMod(b.header)))()
     }

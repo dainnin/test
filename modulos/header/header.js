@@ -1,14 +1,12 @@
-import { $ } from '/test/modulos/funciones/utilidades.js';
-
-import { HTMLatDOM, voidElement, HTMLatObj, classOnBody } from "/test/modulos/funciones/creacion.js"
-
-import { ab, setStateCheck, setStateArr } from "/test/modulos/req/asd.js"
+import { $ } from '/modulos/funciones/utilidades.js';
+import { HTMLatDOM, voidElement, HTMLatObj, classOnBody } from "/modulos/funciones/creacion.js"
+import { ab, setStateCheck, setStateArr } from "/modulos/req/checkToken.js"
 
 const crearTagsHeader = () => {
 
     return HTMLatObj(`
     <a href="/">
-       <img src="/test/modulos/img/logo192.png" alt="logo" className="App-logo"/></img>
+       <img src="/modulos/img/logo192.png" alt="logo" className="App-logo"/></img>
     </a>
     <div>
       <label>Buscar</label>

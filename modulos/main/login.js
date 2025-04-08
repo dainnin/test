@@ -1,7 +1,8 @@
 
-import { HTMLatObj } from "/test/modulos/funciones/creacion.js"
-import { $ } from '/test/modulos/funciones/utilidades.js';
-import { ab } from '/test/modulos/req/asd.js'
+import { HTMLatObj } from "/modulos/funciones/creacion.js"
+import { $ } from '/modulos/funciones/utilidades.js';
+import { ab } from '/modulos/req/checkToken.js'
+import { urls } from '/modulos/env.js';
 async function login(event) {
     event.preventDefault()
     const form = event.target.form
@@ -15,7 +16,7 @@ async function login(event) {
     if (event.target.tagName === "BUTTON" && Object.values(body).indexOf("") === -1) {
         const req = new $.test({});
 
-         req.fetchE(["http://localhost:3069/api/login", {
+         req.fetchE([`${urls.local.api}login`, {
             "credentials": "include",
             "headers": {
 
