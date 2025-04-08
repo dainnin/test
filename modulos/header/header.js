@@ -1,6 +1,6 @@
-import { $ } from '/modulos/funciones/utilidades.js';
-import { HTMLatDOM, voidElement, HTMLatObj, classOnBody } from "/modulos/funciones/creacion.js"
-import { ab, setStateCheck, setStateArr } from "/modulos/req/checkToken.js"
+import { $ } from '/test/modulos/funciones/utilidades.js';
+import { HTMLatDOM, voidElement, HTMLatObj, classOnBody } from "/test/modulos/funciones/creacion.js"
+import { ab, setStateCheck, setStateArr } from "/test/modulos/req/checkToken.js"
 
 const crearTagsHeader = () => {
 
