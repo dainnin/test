@@ -6,7 +6,7 @@ const crearTagsHeader = () => {
 
     return HTMLatObj(`
     <a href="/">
-       <img src="/modulos/img/logo192.png" alt="logo" className="App-logo"/></img>
+       <img src="https://assets.nintendo.eu/image/upload/c_scale,f_auto,q_auto/v1660286969/NAL/Migration/KirbysDreamBuffet/HACP_A59X_char01_01_R_ad_0.png" alt="logo" className="App-logo"/></img>
     </a>
     <div>
       <label>Buscar</label>
