@@ -3,7 +3,6 @@ export const FETCH = new fetchResReq({})
 import { HTMLatObj } from "/test/modulos/funciones/creacion.js"
 
 
-console.log($.urls)
 
 export const rutas = {
     "/": HTMLatObj(`<h1 style="color:red;">Holaaa</h1>`),
