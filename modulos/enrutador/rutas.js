@@ -9,7 +9,7 @@ export const rutas = {
 
     "productos": {
         componente: 'productos',
-        urlModulo: '/modulos/main/productos/productos.js',
+        urlModulo: '/test/modulos/main/productos/productos.js',
     },
     "testText": HTMLatObj(await FETCH.text('/modulos/test.html')),
     "404": HTMLatObj(
@@ -31,6 +31,6 @@ export const rutas = {
 `),
     "login": {
         componente: 'LoginForm',
-        urlModulo: '/modulos/main/login.js'
+        urlModulo: '/test/modulos/main/login.js'
     },
 }
