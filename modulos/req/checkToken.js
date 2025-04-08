@@ -1,5 +1,5 @@
-import { urls } from '/modulos/env.js';
-import { proxyFlex ,fetchResReq } from '/modulos/funciones/utilidades.js';
+import { urls } from '/test/modulos/env.js';
+import { proxyFlex ,fetchResReq } from '/test/modulos/funciones/utilidades.js';
 
 
  const abc = new fetchResReq({ setGlobal: true });
