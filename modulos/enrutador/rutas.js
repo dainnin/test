@@ -1,6 +1,6 @@
-import { $,fetchResReq } from '/modulos/funciones/utilidades.js';
+import { $,fetchResReq } from '/test/modulos/funciones/utilidades.js';
 export const FETCH = new fetchResReq({})
-import { HTMLatObj } from "/modulos/funciones/creacion.js"
+import { HTMLatObj } from "/test/modulos/funciones/creacion.js"
 
 
 console.log($.urls)
